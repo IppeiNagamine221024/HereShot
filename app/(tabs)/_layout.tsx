@@ -6,14 +6,15 @@ import { colors } from '../../src/theme/colors';
 
 /**
  * 中央のカメラ FAB（要件 3.1）。タップで撮影モーダルを開く。
+ * コンポーネント参照を安定させ、tabBarButton にインライン関数を渡さない。
  */
-function CameraTabButton() {
+function CameraTabBarButton() {
   const router = useRouter();
   return (
     <View style={styles.cameraWrap} pointerEvents="box-none">
       <Pressable
         accessibilityLabel="写真を撮る"
-        onPress={() => router.push('/camera')}
+        onPress={() => router.push('/capture')}
         style={({ pressed }) => [styles.cameraButton, pressed && styles.pressed]}
       >
         <Ionicons name="camera" size={30} color={colors.white} />
@@ -60,10 +61,7 @@ export default function TabsLayout() {
         name="camera"
         options={{
           title: '',
-          tabBarButton: () => <CameraTabButton />,
-        }}
-        listeners={{
-          tabPress: (e) => e.preventDefault(),
+          tabBarButton: CameraTabBarButton,
         }}
       />
       <Tabs.Screen

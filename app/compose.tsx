@@ -45,7 +45,7 @@ export default function ComposeScreen() {
     return (
       <View style={styles.empty}>
         <Text style={styles.emptyText}>撮影データがありません。</Text>
-        <Button label="カメラに戻る" onPress={() => router.replace('/camera')} />
+        <Button label="カメラに戻る" onPress={() => router.replace('/capture')} />
       </View>
     );
   }
@@ -114,7 +114,7 @@ export default function ComposeScreen() {
         onPress={onPost}
         loading={createPost.isPending}
       />
-      <Button label="撮り直す" variant="ghost" onPress={() => router.replace('/camera')} />
+      <Button label="撮り直す" variant="ghost" onPress={() => router.replace('/capture')} />
     </ScrollView>
   );
 }
