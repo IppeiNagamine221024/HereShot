@@ -66,8 +66,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": ""
-      }
-    }
+        "projectId": "7594f0f3-4bfb-4bc3-b626-008e26d8bb3f"
+      },
+      "router": {}
+    },
+    "owner": "wippeipy221024"
   }
 }

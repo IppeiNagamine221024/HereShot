@@ -5,8 +5,9 @@
 -- =============================================================
 
 -- 拡張機能 ----------------------------------------------------
-create extension if not exists postgis;
-create extension if not exists "uuid-ossp";
+-- PostGIS は Supabase では extensions スキーマに作成される。
+create extension if not exists postgis with schema extensions;
+-- UUID は拡張不要の Postgres 標準 gen_random_uuid() を使用する。
 
 -- 公開範囲の enum（要件 2.3）---------------------------------
 do $$
@@ -28,13 +29,14 @@ create table if not exists public.profiles (
 
 -- posts -------------------------------------------------------
 create table if not exists public.posts (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles(id) on delete cascade,
   lat double precision not null,
   lng double precision not null,
   -- PostGIS の地理座標（bbox / 近傍クエリ用）。lat/lng から自動生成。
-  geom geography(Point, 4326) generated always as
-    (st_setsrid(st_makepoint(lng, lat), 4326)::geography) stored,
+  -- Supabase では PostGIS は extensions スキーマに作成されるため明示修飾する。
+  geom extensions.geography(Point, 4326) generated always as
+    (extensions.st_setsrid(extensions.st_makepoint(lng, lat), 4326)::extensions.geography) stored,
   place_name text,
   -- Storage 上のオブジェクトパス（URL ではなくパスを保持）
   image_path text not null,
@@ -252,7 +254,8 @@ returns table (
 language sql
 stable
 security invoker
-set search_path = public
+-- PostGIS（&& 演算子・st_makeenvelope・geography 型）解決のため extensions を含める。
+set search_path = public, extensions
 as $$
   select
     p.id,
@@ -268,7 +271,7 @@ as $$
     pr.avatar_url as author_avatar_url
   from public.posts p
   join public.profiles pr on pr.id = p.user_id
-  where p.geom && st_makeenvelope(min_lng, min_lat, max_lng, max_lat, 4326)::geography
+  where p.geom && extensions.st_makeenvelope(min_lng, min_lat, max_lng, max_lat, 4326)::extensions.geography
     and public.can_view_post(auth.uid(), p.user_id, p.visibility);
 $$;
 
