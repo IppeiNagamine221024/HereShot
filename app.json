@@ -1,0 +1,73 @@
+{
+  "expo": {
+    "name": "HereShot",
+    "slug": "HereShot",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "hereshot",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#0B1021"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.hereshot.app",
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "投稿地点から50m以内かどうかを判定し、近くの写真を解放するために現在地を使用します。",
+        "NSCameraUsageDescription": "HereShotではアプリ内カメラで写真を撮影して投稿します。",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.hereshot.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B1021",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.CAMERA"
+      ],
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-apple-authentication",
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "投稿地点から50m以内かどうかを判定し、近くの写真を解放するために現在地を使用します。"
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "HereShotではアプリ内カメラで写真を撮影して投稿します。",
+          "recordAudioAndroid": false
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}
